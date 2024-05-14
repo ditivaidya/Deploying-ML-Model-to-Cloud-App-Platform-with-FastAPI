@@ -1,5 +1,5 @@
 # python==3.8.18
-ipykernel
+# ipykernel
 numpy
 pandas
 scikit-learn
