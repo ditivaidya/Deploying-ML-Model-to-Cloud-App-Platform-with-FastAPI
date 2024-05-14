@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 
 # Add the necessary imports for the starter code.
 import pandas as pd
+from data import process_data
 
 # Add code to load in the data.
 data = pd.read_csv("/data/census_clean.csv")
