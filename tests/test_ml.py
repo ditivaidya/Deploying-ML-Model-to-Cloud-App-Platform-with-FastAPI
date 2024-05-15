@@ -6,8 +6,17 @@ import logging
 import joblib
 from ml.data import process_data
 from ml.model import compute_model_metrics, inference
+import dvc.api
 
-data = pd.read_csv("../data/census_clean.csv")
+#with dvc.api.open('/data/', 
+#                  repo='https://github.com/ditivaidya/Deploying-ML-Model-to-Cloud-App-Platform-with-FastAPI.git') as f:
+#    # Read data from the file-like object (f)
+#    data = pd.read_csv(f)
+
+file_dir = os.path.dirname(__file__)
+data = pd.read_csv(os.path.join(file_dir,"./data/census_cleaned.csv"))
+
+#data = pd.read_csv("../data/census_clean.csv")
 train, test = train_test_split(data, test_size=0.20)
 
 

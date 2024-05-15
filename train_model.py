@@ -10,7 +10,10 @@ from ml.data import process_data
 from ml.model import train_model, compute_model_metrics, inference
 
 # Add code to load in the data.
-data = pd.read_csv("data/census_clean.csv")
+file_dir = os.path.dirname(__file__)
+data = pd.read_csv(os.path.join(file_dir,"./data/census_cleaned.csv"))
+
+#data = pd.read_csv("data/census_clean.csv")
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
 train, test = train_test_split(data, test_size=0.20)
