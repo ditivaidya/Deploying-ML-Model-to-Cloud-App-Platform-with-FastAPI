@@ -46,7 +46,7 @@ def train_model(X_train, y_train):
     # Train the best estimator on the full training set
     best_estimator.fit(X_train, y_train)
 
-    return best_estimator
+    return best_estimator, best_params
 
 
 
