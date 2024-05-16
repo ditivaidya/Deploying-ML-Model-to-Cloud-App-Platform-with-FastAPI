@@ -11,3 +11,4 @@ pydantic
 gunicorn
 dvc
 xgboost
+nodejs
