@@ -7,13 +7,15 @@ from ml.model import inference
 from ml.data import process_data
 import os
 import joblib 
+import json
 
+'''
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     if os.system("dvc pull") != 0:
         exit("dvc pull failed")
     os.system("rm -r .dvc .apt/usr/lib/dvc")
-
+'''
 # Create FastAPI instance
 app = FastAPI()
 
@@ -33,9 +35,9 @@ class InputData(BaseModel):
     education_num: int = Field(..., example=12) 
     marital_status: str = Field(..., example="Divorced")
     occupation: str = Field(..., example="Sales")
-    relationship: str = Field(..., example="Husband")
+    relationship: str = Field(..., example="Not-in-family")
     race: str = Field(..., example="White")
-    sex: str = Field(..., example="Female")
+    sex: str = Field(..., example="Male")
     capital_gain: int = Field(..., example=0)
     capital_loss: int = Field(..., example=1340)
     hours_per_week: int = Field(..., example=50)
@@ -79,5 +81,4 @@ async def predict(data: InputData):
 # Run the application with Uvicorn server
 if __name__ == "__main__":
     import uvicorn
-    #uvicorn.run(app, host="127.0.0.1", port=8000)
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
