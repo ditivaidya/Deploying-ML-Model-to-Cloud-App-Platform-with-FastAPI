@@ -10,6 +10,7 @@ import joblib
 import pandas as pd
 from ml.data import process_data
 from ml.model import train_model, compute_model_metrics, inference
+from slice_perform import slice
 
 # Add code to load in the data.
 data = pd.read_csv("data/census_clean.csv")
@@ -55,3 +56,6 @@ y_preds = inference(model, X_test)
 precision, recall, fbeta = compute_model_metrics(y_test, y_preds)
 
 print(f"Model Performance: Precision Score {precision}, Recall Score {recall}, fbeta {fbeta}")
+
+# Write slice_output.txt
+slice(cat_features = cat_features, slice_file_path = 'slice_output.txt')
