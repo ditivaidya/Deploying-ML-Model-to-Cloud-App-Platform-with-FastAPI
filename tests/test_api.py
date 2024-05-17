@@ -10,9 +10,7 @@ def test_get():
     assert response.status_code == 200
     assert response.json() == {"Message": "Welcome to the Model Inference API"}
 
-
 def test_post_0():
-   
    payload = {"age": 30,
         "workclass": "Local-gov",
         "fnlgt": 287927,
@@ -36,7 +34,6 @@ def test_post_0():
 
 
 def test_post_1():
-    
    payload = {"age": 25,
         "workclass": "Private",
         "fnlgt": 287927,
