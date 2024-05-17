@@ -18,20 +18,25 @@ This is an XGBoost Binary Classfier model with the following tuned hyper paramet
 
 ## Intended Use
 
-## Training and Evaluation Data
+This model used to predict whether a person makes more than $50K a year based on a few features (See below) 
 
-The model is trained on the census data from the UCI Machine Learning Repository 
+## Training Data
+
+The model is trained on the census data from the UCI Machine Learning Repository.
 https://archive.ics.uci.edu/dataset/20/census+income
+
+## Evaluation Data
 
 The model was evaluated using an 80-20, train/test split.
 
 ## Metrics
-
 
 - Precision Score 0.611
 - Recall Score 0.832
 - fbeta 0.704
 
 ## Ethical Considerations
+
+This model does not check feature imoprtance. This could lead to ethical concerns such as biases based on features such as gender or race. Based on what this model is used for, this can be a serious ethical concern.
 
 ## Caveats and Recommendations
