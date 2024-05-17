@@ -50,6 +50,14 @@ async def read_root():
 # POST endpoint for model inference
 @app.post("/predict")
 async def predict(data: InputData):
+    all_features_hyph = ['age', 'workclass', 'fnlgt', 'education', 'education-num',
+       'marital-status', 'occupation', 'relationship', 'race', 'sex',
+       'capital-gain', 'capital-loss', 'hours-per-week', 'native-country']
+    all_features_und = [col.replace("-", "_") for col in all_features_hyph]
+    input_conv = dict(zip(all_features_und, all_features_hyph))
+
+    input_df = pd.DataFrame({input_conv[key]: value for key, value in data.__dict__.items() if key in input_conv})
+    
     cat_features = [
         "workclass",
         "education",
@@ -60,13 +68,7 @@ async def predict(data: InputData):
         "sex",
         "native-country",
     ]
-    all_features = ['age', 'workclass', 'fnlgt', 'education', 'education-num',
-       'marital-status', 'occupation', 'relationship', 'race', 'sex',
-       'capital-gain', 'capital-loss', 'hours-per-week', 'native-country',
-       'salary']
-    all_features_clean = [col.replace("-", "_") for col in all_features]
-    input_data = ["data."+col for col in all_features_clean]
-    input_df = pd.DataFrame(data=input_data, columns=all_features)
+
     X, _, _, _ = process_data(
         input_df, categorical_features=cat_features, encoder=encoder, lb=lb, training=False)
     y_pred = inference(model, X)
