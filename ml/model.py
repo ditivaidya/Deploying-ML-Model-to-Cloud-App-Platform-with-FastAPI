@@ -1,9 +1,17 @@
+"""
+Created on Friday May 17 2024
+
+@author: Aditi Vaidya
+
+Defines all modelling functions neede to train model, infer prediction and compute metrics
+"""
+# Import libraries
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.model_selection import GridSearchCV
 from xgboost import XGBClassifier
 import numpy as np
 
-# Optional: implement hyperparameter tuning.
+# Function to train model and tune hyperparameters using Grid Search
 def train_model(X_train, y_train):
     """
     Trains a machine learning model and returns it.
@@ -21,7 +29,7 @@ def train_model(X_train, y_train):
     """
     # Define the XGBoost classifier
     xgb = XGBClassifier(objective='binary:logistic', eval_metric='logloss', use_label_encoder=False, random_state=42)
-
+    
     # Define the parameter grid to search
     param_grid = {
         'learning_rate': [0.1, 0.01],
@@ -48,8 +56,7 @@ def train_model(X_train, y_train):
 
     return best_estimator, best_params
 
-
-
+# Function to compute Precision, Recall and F-Beta Scores
 def compute_model_metrics(y, preds):
     """
     Validates the trained machine learning model using precision, recall, and F1.
@@ -71,7 +78,7 @@ def compute_model_metrics(y, preds):
     recall = recall_score(y, preds, zero_division=1)
     return precision, recall, fbeta
 
-
+# Infer model result function
 def inference(model, X):
     """ Run model inferences and return the predictions.
 
