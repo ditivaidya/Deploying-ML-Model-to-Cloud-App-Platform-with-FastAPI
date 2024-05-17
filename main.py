@@ -67,7 +67,7 @@ async def predict(data: InputData):
     # Create dictionary that links both
     input_conv = dict(zip(all_features_und, all_features_hyph))
     # Process input data
-    data_dict = data.model_dump()
+    data_dict = data.dict()
     logging.info(f"Data dictionary: {data_dict}")
     data_dictionary = (({input_conv[k]: v for k, v in data_dict.items() if k in input_conv}))
     input_df = pd.DataFrame(data_dictionary, index=[0])
