@@ -14,6 +14,7 @@ from ml.data import process_data
 import os
 import joblib 
 import logging
+import json
 
 # Insert code block here (mentioned in instructions)
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
@@ -35,20 +36,20 @@ with open('./model/lb.pkl', 'rb') as f:
 
 # Pydantic model for input data
 class InputData(BaseModel):
-    age: int = Field(examples=39)
-    workclass: str = Field(examples='Self-emp-inc')
-    fnlgt: int = Field(examples=77516)
-    education: str = Field(examples="Assoc-acdm")
-    education_num: int = Field(examples=12) 
-    marital_status: str = Field(examples="Divorced")
-    occupation: str = Field(examples="Sales")
-    relationship: str = Field(examples="Not-in-family")
-    race: str = Field(examples="White")
-    sex: str = Field(examples="Male")
-    capital_gain: int = Field(examples=0)
-    capital_loss: int = Field(examples=1340)
-    hours_per_week: int = Field(examples=50)
-    native_country: str = Field(examples="United-States")
+    age: int = Field(..., examples=39)
+    workclass: str = Field(..., examples='Self-emp-inc')
+    fnlgt: int = Field(..., examples=77516)
+    education: str = Field(..., examples="Assoc-acdm")
+    education_num: int = Field(..., examples=12) 
+    marital_status: str = Field(..., examples="Divorced")
+    occupation: str = Field(..., examples="Sales")
+    relationship: str = Field(..., examples="Not-in-family")
+    race: str = Field(..., examples="White")
+    sex: str = Field(..., examples="Male")
+    capital_gain: int = Field(..., examples=0)
+    capital_loss: int = Field(..., examples=1340)
+    hours_per_week: int = Field(..., examples=50)
+    native_country: str = Field(..., examples="United-States")
 
 # Welcome message at the root endpoint
 @app.get("/")
