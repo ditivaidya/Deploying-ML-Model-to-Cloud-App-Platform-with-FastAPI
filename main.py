@@ -53,40 +53,35 @@ async def read_root():
 # POST endpoint for model inference
 @app.post("/predict")
 async def predict(data: InputData):
-    try:
-        all_features_hyph = ['age', 'workclass', 'fnlgt', 'education', 'education-num',
-        'marital-status', 'occupation', 'relationship', 'race', 'sex',
-        'capital-gain', 'capital-loss', 'hours-per-week', 'native-country']
-        all_features_und = [col.replace("-", "_") for col in all_features_hyph]
-        input_conv = dict(zip(all_features_und, all_features_hyph))
-        
-        
-        data_dict = data.dict()
-        logging.info(f"Data dictionary: {data_dict}")
-        ##json.loads(data).items()
+    all_features_hyph = ['age', 'workclass', 'fnlgt', 'education', 'education-num',
+    'marital-status', 'occupation', 'relationship', 'race', 'sex',
+    'capital-gain', 'capital-loss', 'hours-per-week', 'native-country']
+    all_features_und = [col.replace("-", "_") for col in all_features_hyph]
+    input_conv = dict(zip(all_features_und, all_features_hyph))
+    
+    data_dict = data.model_dump()
+    logging.info(f"Data dictionary: {data_dict}")
+    ##json.loads(data).items()
 
-        data_dictionary = (({input_conv[k]: v for k, v in data_dict.items() if k in input_conv}))
-        input_df = pd.DataFrame(data_dictionary, index=[0])
+    data_dictionary = (({input_conv[k]: v for k, v in data_dict.items() if k in input_conv}))
+    input_df = pd.DataFrame(data_dictionary, index=[0])
 
-        cat_features = [
-            "workclass",
-            "education",
-            "marital-status",
-            "occupation",
-            "relationship",
-            "race",
-            "sex",
-            "native-country",
-        ]
+    cat_features = [
+        "workclass",
+        "education",
+        "marital-status",
+        "occupation",
+        "relationship",
+        "race",
+        "sex",
+        "native-country",
+    ]
 
-        X, _, _, _ = process_data(
-            input_df, categorical_features=cat_features, encoder=encoder, lb=lb, training=False)
-        y_pred = inference(model, X)
-        model_result = lb.inverse_transform(y_pred)[0]
-        return {"prediction": model_result}
-    except Exception as e:
-        logging.error(f"Error during prediction: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+    X, _, _, _ = process_data(
+        input_df, categorical_features=cat_features, encoder=encoder, lb=lb, training=False)
+    y_pred = inference(model, X)
+    model_result = lb.inverse_transform(y_pred)[0]
+    return {"prediction": model_result}
 
 
 # Run the application with Uvicorn server
