@@ -55,9 +55,10 @@ async def predict(data: InputData):
        'capital-gain', 'capital-loss', 'hours-per-week', 'native-country']
     all_features_und = [col.replace("-", "_") for col in all_features_hyph]
     input_conv = dict(zip(all_features_und, all_features_hyph))
-
-    input_df = pd.DataFrame({input_conv[key]: value for key, value in data.__dict__.items() if key in input_conv})
     
+    data_dictionary = (({input_conv[k]: v for k, v in (json.loads(data).items()) if k in input_conv}))
+    input_df = pd.DataFrame(data_dictionary, index=[0])
+
     cat_features = [
         "workclass",
         "education",
