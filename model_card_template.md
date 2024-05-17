@@ -18,7 +18,7 @@ This is an XGBoost Binary Classfier model with the following tuned hyper paramet
 
 ## Intended Use
 
-This model used to predict whether a person makes more than $50K a year based on a few features (See below) 
+This model used to predict whether a person makes more than $50K a year based on a few features (See link below to read about features) 
 
 ## Training Data
 
@@ -40,3 +40,6 @@ The model was evaluated using an 80-20, train/test split.
 This model does not check feature imoprtance. This could lead to ethical concerns such as biases based on features such as gender or race. Based on what this model is used for, this can be a serious ethical concern.
 
 ## Caveats and Recommendations
+
+It is recomended that the model is monitored frequenty and new data is analysed to assess changing demographics and minimise Data Drift.
+It is also recomended that data scientists look into feature importance to avoid any unconscious biases.
