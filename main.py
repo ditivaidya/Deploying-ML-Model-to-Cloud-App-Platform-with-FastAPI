@@ -48,7 +48,7 @@ class InputData(BaseModel):
 # Welcome message at the root endpoint
 @app.get("/")
 async def read_root():
-    return {"message": "Welcome to the Model Inference API"}
+    return {"Message": "Welcome to the Model Inference API"}
 
 # POST endpoint for model inference
 @app.post("/predict")
