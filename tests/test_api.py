@@ -1,16 +1,30 @@
+"""
+Created on Friday May 17 2024
+
+@author: Aditi Vaidya
+
+Unit tests that ensure GET and POST methods are running as expected 
+"""
+# Import Libraries
 import json
 from fastapi import testclient
 from main import app
-import pytest
 
+# Create FastAPI test client instance
 client = testclient.TestClient(app)
 
 def test_get():
+    '''
+    Test GET functionality and ensure Welcome message is running as expected.
+    '''
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"Message": "Welcome to the Model Inference API"}
 
 def test_post_0():
+   '''
+   Test POST functionality and ensure model is inferring the expected predicted salary output.
+   '''
    payload = {"age": 30,
         "workclass": "Local-gov",
         "fnlgt": 287927,
@@ -32,8 +46,10 @@ def test_post_0():
    assert response.status_code == 200
    assert response.json() == {'prediction': '>50K'}
 
-
 def test_post_1():
+   '''
+   Test POST functionality and ensure model is inferring the expected predicted salary output.
+   '''
    payload = {"age": 25,
         "workclass": "Private",
         "fnlgt": 287927,
