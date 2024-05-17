@@ -1,5 +1,5 @@
 # Put the code for your API here.
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import pandas as pd
 from typing import List
@@ -8,14 +8,15 @@ from ml.data import process_data
 import os
 import joblib 
 import json
+import logging
 
-'''
+
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     if os.system("dvc pull") != 0:
         exit("dvc pull failed")
     os.system("rm -r .dvc .apt/usr/lib/dvc")
-'''
+
 # Create FastAPI instance
 app = FastAPI()
 
@@ -52,31 +53,41 @@ async def read_root():
 # POST endpoint for model inference
 @app.post("/predict")
 async def predict(data: InputData):
-    all_features_hyph = ['age', 'workclass', 'fnlgt', 'education', 'education-num',
-       'marital-status', 'occupation', 'relationship', 'race', 'sex',
-       'capital-gain', 'capital-loss', 'hours-per-week', 'native-country']
-    all_features_und = [col.replace("-", "_") for col in all_features_hyph]
-    input_conv = dict(zip(all_features_und, all_features_hyph))
-    
-    data_dictionary = (({input_conv[k]: v for k, v in (json.loads(data).items()) if k in input_conv}))
-    input_df = pd.DataFrame(data_dictionary, index=[0])
+    try:
+        all_features_hyph = ['age', 'workclass', 'fnlgt', 'education', 'education-num',
+        'marital-status', 'occupation', 'relationship', 'race', 'sex',
+        'capital-gain', 'capital-loss', 'hours-per-week', 'native-country']
+        all_features_und = [col.replace("-", "_") for col in all_features_hyph]
+        input_conv = dict(zip(all_features_und, all_features_hyph))
+        
+        
+        data_dict = data.dict()
+        logging.info(f"Data dictionary: {data_dict}")
+        ##json.loads(data).items()
 
-    cat_features = [
-        "workclass",
-        "education",
-        "marital-status",
-        "occupation",
-        "relationship",
-        "race",
-        "sex",
-        "native-country",
-    ]
+        data_dictionary = (({input_conv[k]: v for k, v in data_dict.items() if k in input_conv}))
+        input_df = pd.DataFrame(data_dictionary, index=[0])
 
-    X, _, _, _ = process_data(
-        input_df, categorical_features=cat_features, encoder=encoder, lb=lb, training=False)
-    y_pred = inference(model, X)
-    model_result = lb.inverse_transform(y_pred)[0]
-    return {"prediction": model_result}
+        cat_features = [
+            "workclass",
+            "education",
+            "marital-status",
+            "occupation",
+            "relationship",
+            "race",
+            "sex",
+            "native-country",
+        ]
+
+        X, _, _, _ = process_data(
+            input_df, categorical_features=cat_features, encoder=encoder, lb=lb, training=False)
+        y_pred = inference(model, X)
+        model_result = lb.inverse_transform(y_pred)[0]
+        return {"prediction": model_result}
+    except Exception as e:
+        logging.error(f"Error during prediction: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # Run the application with Uvicorn server
 if __name__ == "__main__":
